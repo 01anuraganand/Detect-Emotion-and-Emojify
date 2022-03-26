@@ -1,0 +1,76 @@
+{% extends 'emotions/html/base.html' %}
+{% load static %}
+{% block title%}Upload Image{% endblock %}
+{% block content %}
+
+
+<div class="container-fluid col-lg-8 mt-5 mb-5">
+    <div class="card  border-primary">
+      <div class="card-header text-center">
+        Upload Image
+      </div>
+      <div class="card-body">
+        <form actions = "" method = "post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <div class="text-center">
+                {{form}}
+                </div>
+                <div class="form-group">
+                  <label for="model" class="col-sm-2 col-form-label">Model:</label>
+                  <select class = "form-select col-sm-10" id="" name="model">
+                    <option value="DenseNet201">DenseNet201</option>
+                    <option value="ResNet50">ResNet50</option>
+                    <option value="VGG19">VGG19</option>
+                    <option value="MobileNetV2">MobileNetV2</option>
+                  </select>
+                </div>
+                <input type="submit" class="btn btn-primary mt-5 " value="Detect Emotion">
+        </form>
+        
+      </div>
+      <div class="card-footer text-muted">
+      </div>
+      <div class="row">
+        {% for x in img %}
+         <div class="col-sm-4">
+          <div class="card m-2">
+           <img src="{{x.photo.url}}" class="img-fluid" alt="Responsive image">
+           <div class="card-footer text-center" >
+               Uploaded Photo
+          </div>
+          </div>
+         </div>
+         {% endfor %}
+         <div class="col-sm-8">    
+               
+          <div class="card">
+            {% if max_pred %} 
+              <div class="mt-5">
+                <center><button type="button" class="btn btn-outline-primary" disabled><b> Predicted by {{model}} Model</b></button></center>
+              </div>
+              
+              <br><br>
+
+              Emotion : 
+              {{max_pred}}
+              <br><br>
+              Predicted : 
+              <div class="progress">
+                <div class="progress-bar bg-info" role="progressbar" style="width: {{pred}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{pred}} %</div>
+              </div>
+              
+            </b>
+            {% endif %}
+           </div>
+          </div>
+        
+    </div>
+  </div>
+</div>
+
+
+{% if nst %}
+<a href="{% url 'styled_image' %}">Generate Avatar</a>
+{% endif %}
+
+{% endblock %}

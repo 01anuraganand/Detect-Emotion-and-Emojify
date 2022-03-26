@@ -1,0 +1,38 @@
+{% extends 'emotions/html/base.html' %}
+{% load static %}
+{% block title%}Upload Image{% endblock %}
+{% block content %}
+<div class="mt-2">
+    <center><button type="button" class="btn btn-outline-primary" disabled><b> Original Image and Generated Image</b></button></center>
+  </div>
+<div class = "container-fluid col-lg-8 mt-5 mb-5">
+    <div class="card text-center border-primary">
+        <div class="row">
+            
+            <div class="col-sm-6">
+            <div class="card m-2">
+            <img src="{{orig_img.photo.url}}" class="img-thumbnail"  style = "height: 100%;" alt="Responsive image" enctype="multipart/form-data">
+            <div class="card-footer text-center" >
+                Original Image
+            </div>
+            </div>
+            </div>
+
+
+            <div class="col-sm-6">
+            <div class="card m-2">
+            <img src="{{img.gen_img.url}}" class="img-thumbnail" style = "height: 100%;" alt="Responsive image" enctype="multipart/form-data">
+            <div class="card-footer text-center" >
+                Styled Image
+            </div>
+            </div>
+            <div class="mt-2">
+                <a href="{% url 'upload_image_for_nst' %}"><button type="button" class="btn btn-success">Try another!</button></a>
+            </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

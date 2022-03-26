@@ -1,0 +1,33 @@
+{% extends 'emotions/html/base.html' %}
+{% load static %}
+{% block title %} Home : Emotion & Avatar!{% endblock %}
+{% block content %}
+
+<div class="container-fluid col-lg-8 mt-5 mb-5">
+  <div class="card text-center border-primary">
+    <div class="card-header">
+      Detect Emotions
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Get expression from human face </h5>
+      <p class="card-text">Detected Emotions : Angry, Disgust, Fear, Happy, Sad, Suprise, Neutral.</p>
+      <a href="{% url 'detected_emotion' %}" class="btn btn-primary">Get Started!</a>
+    </div>
+    <div class="card-footer text-muted">
+      
+    </div>
+  </div>
+  <div class="card text-center border-primary mt-5">
+    <div class="card-header">
+      Generate Avatar
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Generate Avatar with Neural Style Transfer </h5>
+      <p class="card-text mt-5"></p>
+      <a href="{% url 'upload_image_for_nst' %}" class="btn btn-primary">Get Started!</a>
+    </div>
+    <div class="card-footer text-muted">
+      
+    </div>
+  </div>
+{% endblock %}

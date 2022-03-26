@@ -1,0 +1,44 @@
+{% extends 'emotions/html/base.html' %}
+{% load static %}
+{% block title%}Upload Image{% endblock %}
+{% block content %}
+
+
+<div class="container-fluid col-lg-8 mt-5 mb-5">
+    <div class="card text-center border-primary">
+      <div class="card-header">
+        Upload Image
+      </div>
+      <div class="card-body">
+        <form actions = "" method = "post" enctype="multipart/form-data">
+            {% csrf_token %}
+                {{form}}
+                <input type="submit" class="btn btn-primary" value="Upload Photo">
+        </form>
+        
+      </div>
+      <div class="card-footer text-muted">
+      </div>
+      <div class="row">
+        {% for x in img %}
+         <div class="col-sm-4">
+          <div class="card m-2">
+           <img src="{{x.photo.url}}" class="img-fluid" alt="Responsive image">
+           <div class="card-footer text-center" >
+               Uploaded Photo {{max_pred}}
+           </div>
+          </div>
+         </div>
+        {% endfor %}
+    </div>
+  </div>
+    {% if img %}
+      <center><a href="{% url 'styled_image' %}" class="btn btn-primary mt-5">Generate Avatar</a></center>
+    {% endif %}
+  </div>
+
+<hr>
+
+
+
+{% endblock %}
