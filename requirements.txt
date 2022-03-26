@@ -1,0 +1,8 @@
+virtualenv==20.13.2
+django==4.0.3
+pillow==9.0.1
+numpy==1.22.2
+pandas==1.2.4
+tensorflow==2.7.0
+opencv-python==4.5.4.60
+matplotlib==3.2
