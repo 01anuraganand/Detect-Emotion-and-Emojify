@@ -1,6 +1,7 @@
 from distutils.command.upload import upload
 from django.db import models
 
+
 # Create your models here.
 class Image(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -9,3 +10,6 @@ class Image(models.Model):
 
 class NSTImage(models.Model):
     gen_img = models.ImageField(upload_to = 'nstimages')
+
+class EmojiImage(models.Model):
+    emoji_img = models.ImageField(upload_to = 'Emoji')

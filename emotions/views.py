@@ -2,7 +2,7 @@ import re
 from urllib import request
 from django.shortcuts import render
 from asgiref.sync import async_to_sync
-from .models import Image, NSTImage
+from .models import Image, NSTImage, EmojiImage
 from .forms import ImageForm, NSTImageForm
 import numpy as np
 import pandas as pd
@@ -71,7 +71,7 @@ async def classify_emotion(request,img_path):
     return max(pred[0])*100, pd.Series(str(pred.argmax())).map(classname_mapping)[0], requested_model
 
 def render_upload_photo_classify_emotion(request):
-    form = img = max_pred = pred = model =  None
+    form = img = max_pred = pred = model = emoji_path =  None
     form, img = upload_photo(request)
     img_path = [str(x.photo.url) for x in img] 
     #print(img_path)
@@ -79,11 +79,26 @@ def render_upload_photo_classify_emotion(request):
         try:
             pred, max_pred, model = classify_emotion(request, img_path =img_path[0][1:] )
             pred = round(pred,2)
+            if max_pred == 'Angry':
+                emoji_path = EmojiImage.objects.get(pk = 1)
+            elif max_pred == 'Disgust':
+                emoji_path = EmojiImage.objects.get(pk = 2)
+            elif max_pred == 'Fear':
+                emoji_path = EmojiImage.objects.get(pk = 3)
+            elif max_pred == 'Happy':
+                emoji_path = EmojiImage.objects.get(pk = 4)
+            elif max_pred == 'Sad':
+                emoji_path = EmojiImage.objects.get(pk = 5)
+            elif max_pred == 'Suprise':
+                emoji_path = EmojiImage.objects.get(pk = 6)
+            elif max_pred == 'Neutral':
+                emoji_path = EmojiImage.objects.get(pk = 7) 
+
         except:
             print('-----------')
             #return render(request,'emotions/html/upload_image_to_emotion.html')
 
-    return render(request, 'emotions/html/upload_image_to_emotion.html', {'form' : form, 'img' : img,'pred': pred, 'max_pred': max_pred , 'model': model})
+    return render(request, 'emotions/html/upload_image_to_emotion.html', {'form' : form, 'img' : img,'pred': pred, 'max_pred': max_pred , 'model': model, 'emoji_path' : emoji_path})
 
 
 
@@ -157,7 +172,7 @@ def get_image(content_img_path, style_img_path, img_size = 400):
     return content_image, style_image
 
 def random_generated_image(nst_img_path):
-    content_image, _ = get_image(nst_img_path, 'emotions\download.png', img_size = 400)
+    content_image, _ = get_image(nst_img_path, 'emotions\color.jpg', img_size = 400)
     generated_img = tf.Variable(tf.image.convert_image_dtype(content_image, tf.float32))
     noise = tf.random.uniform(tf.shape(generated_img), -0.25, 0.25)
     generated_img = tf.add(generated_img, noise)
@@ -171,7 +186,7 @@ def get_layer_outputs(vgg, layer_names):
     model = tf.keras.Model([vgg.input], outputs)
     return model
 
-def get_all_input_to_train(content_path, style_path='emotions\download.png'):
+def get_all_input_to_train(content_path, style_path='emotions\color.jpg'):
     content_layer = [('block5_conv4',1)]
     STYLE_LAYERS = [
         ('block1_conv1', 0.2),
